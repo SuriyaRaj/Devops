@@ -51,7 +51,7 @@ node(label:'master') {
    
    stage('Artifactory-Config')
    {
-    artifactorylib "JFrog_Art1","./target/*.war","local-snapshot"
+    JfrogConf "JFrog_Art1","./target/*.war","local-snapshot"
    }
    
 }
