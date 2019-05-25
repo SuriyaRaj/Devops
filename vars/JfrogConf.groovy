@@ -1,20 +1,16 @@
-def call(String serverid,String artifactorypattern,String repo)
-   {
-   def SERVER_ID = "${serverid}"
-   def server = Artifactory.server SERVER_ID
-   def uploadSpec =
-   """
+stage ('Artifactory-Config')
+{
+def server = Artifactory.server('JFrog_Art1')
+server = Artifactory.newServer url: 'http://52.167.59.104:8081/artifactory/', username: 'admin', password: 'password'
+def uploadSpec = """{
+  "files": [
     {
-    "files": [
-        {
-            "pattern": "${artifactorypattern}",
-            "target": "${repo}/${BUILD_NUMBER}/"
-        }
-      ]
+      "pattern": "./target/*.war",
+      "target": "Snapshot/${BUILD_NUMBER}/"
     }
-    """
-    def buildInfo = Artifactory.newBuildInfo() 
-    buildInfo.env.capture = true 
-    buildInfo=server.upload(uploadSpec) 
-    server.publishBuildInfo(buildInfo) 
-   }
+ ]
+}"""
+server.upload(uploadSpec)
+ 
+
+}
