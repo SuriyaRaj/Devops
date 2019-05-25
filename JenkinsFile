@@ -40,18 +40,18 @@ node(label:'master') {
    }
    stage('Build docker image for war file')
    {
-     // sh "docker build -t hajira/project:${BUILD_NUMBER} ."
-      docker.withRegistry('https://registry.hub.docker.com','DockerHub')
+     // sh "docker build -t suriaraj/project:${BUILD_NUMBER} ."
+      docker.withRegistry('https://registry.hub.docker.com','dockerloign')
       {
-      def image = docker.build("hajira/project:${BUILD_NUMBER}")
+      def image = docker.build("suriaraj/project:${BUILD_NUMBER}")
       image.push()
       }
       
    }
    
-   stage('Deploy artifacts')
+   stage('Artifactory-Config')
    {
-    artifactorylib "Artifactory","./target/*.war","local-snapshot"
+    artifactorylib "JFrog_Art1","./target/*.war","local-snapshot"
    }
    
 }
